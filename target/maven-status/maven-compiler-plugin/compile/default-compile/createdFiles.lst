@@ -1,0 +1,16 @@
+in/airtel/entertainment/platform/analytic/core/AnalyticContextKeys.class
+in/airtel/entertainment/platform/analytic/api/ReactiveAnalytic.class
+in/airtel/entertainment/platform/analytic/core/EntityExtractor$MethodAccessor.class
+in/airtel/entertainment/platform/analytic/core/TransactionStack.class
+in/airtel/entertainment/platform/analytic/aop/AnalyseTransactionAspect.class
+in/airtel/entertainment/platform/analytic/core/TransactionData.class
+in/airtel/entertainment/platform/analytic/annotation/Analysed.class
+in/airtel/entertainment/platform/analytic/annotation/AnalyseTransaction.class
+in/airtel/entertainment/platform/analytic/core/EntityExtractor$MemberAccessor.class
+in/airtel/entertainment/platform/analytic/core/AnalyticJsonLogger.class
+in/airtel/entertainment/platform/analytic/core/EntityExtractor$FieldAccessor.class
+in/airtel/entertainment/platform/analytic/encoder/AnalyticJsonEncoder.class
+in/airtel/entertainment/platform/analytic/autoconfigure/ReactiveAnalyticAutoConfiguration.class
+in/airtel/entertainment/platform/analytic/filter/AnalyticWebFilter.class
+in/airtel/entertainment/platform/analytic/core/EntityExtractor.class
+in/airtel/entertainment/platform/analytic/annotation/AnalysedEntity.class
