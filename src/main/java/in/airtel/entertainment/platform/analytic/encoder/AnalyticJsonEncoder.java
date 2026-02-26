@@ -31,6 +31,7 @@ public class AnalyticJsonEncoder extends EncoderBase<ILoggingEvent> {
 
         // level
         sb.append(",\"level\":\"").append(event.getLevel().toString()).append("\"");
+        sb.append(",\"log_type\":\"LOGSTASH\"");
 
         // loggerName
         sb.append(",\"loggerName\":\"").append(escapeJson(event.getLoggerName())).append("\"");
