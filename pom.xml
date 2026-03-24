@@ -6,7 +6,7 @@
 
     <groupId>in.airtel.entertainment.platform</groupId>
     <artifactId>reactive-analytic-framework</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Reactive Analytic Framework</name>
     <description>Reactor Context-based analytic transaction framework for Spring WebFlux</description>
@@ -112,6 +112,19 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <distributionManagement>
+        <repository>
+            <id>discovery-mvn</id>
+            <name>Discovery Maven Repository</name>
+            <url>http://nexus.wynkster.io/repository/discovery-mvn/</url>
+        </repository>
+        <snapshotRepository>
+            <id>airtel-tv-mvn-snapshots</id>
+            <name>Discovery Maven Snapshot Repository</name>
+            <uniqueVersion>false</uniqueVersion>
+            <url>http://nexus.wynkster.io/repository/discovery-mvn-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <build>
         <plugins>

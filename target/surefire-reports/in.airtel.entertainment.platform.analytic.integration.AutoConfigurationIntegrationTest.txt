@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: in.airtel.entertainment.platform.analytic.integration.AutoConfigurationIntegrationTest
--------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.725 s -- in in.airtel.entertainment.platform.analytic.integration.AutoConfigurationIntegrationTest
