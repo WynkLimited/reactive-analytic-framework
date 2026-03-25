@@ -119,10 +119,10 @@
             <url>http://nexus.wynkster.io/repository/discovery-mvn/</url>
         </repository>
         <snapshotRepository>
-            <id>airtel-tv-mvn-snapshots</id>
+            <id>discovery-mvn-snapshot</id>
             <name>Discovery Maven Snapshot Repository</name>
             <uniqueVersion>false</uniqueVersion>
-            <url>http://nexus.wynkster.io/repository/discovery-mvn-snapshots/</url>
+            <url>http://nexus.wynkster.io/repository/discovery-mvn-snapshot/</url>
         </snapshotRepository>
     </distributionManagement>
 
