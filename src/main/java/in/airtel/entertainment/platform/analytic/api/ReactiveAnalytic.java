@@ -187,10 +187,16 @@ public final class ReactiveAnalytic {
             Throwable error = signal.isOnError() ? signal.getThrowable() : null;
             Map<String, Object> endMap = current.toEndMap(error);
 
-            // Promote data to parent if nested
+            // Promote data to parent if nested, plus this child's elapsed time
+            // as "<name>_ms" so the parent log line directly shows per-stage timings.
+            // If the same child name fires multiple times under one parent, sum the elapsed times.
             TransactionData parent = stack.getParent();
             if (parent != null) {
                 parent.putAll(current.getData());
+                Object existing = parent.get(transactionName + "_ms");
+                long elapsed = (Long) endMap.get("timeTaken");
+                long total = existing instanceof Number n ? n.longValue() + elapsed : elapsed;
+                parent.put(transactionName + "_ms", total);
             }
 
             AnalyticJsonLogger.log(endMap);
