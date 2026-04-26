@@ -8,6 +8,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ReactiveAnalyticTest {
@@ -50,6 +52,38 @@ class ReactiveAnalyticTest {
 
         StepVerifier.create(mono)
                 .expectNext("data")
+                .verifyComplete();
+    }
+
+    @Test
+    void updateMapShouldMutateCurrentTransaction() {
+        Mono<String> mono = Mono.deferContextual(ctx -> {
+            TransactionStack stack = ctx.get(AnalyticContextKeys.TRANSACTION_STACK_KEY);
+            assertEquals("value1", stack.peek().get("key1"));
+            assertEquals(2, stack.peek().get("key2"));
+            return Mono.just("data");
+        })
+                .transform(ReactiveAnalytic.update(Map.of("key1", "value1", "key2", 2)))
+                .transform(ReactiveAnalytic.trace("updateMapTest"));
+
+        StepVerifier.create(mono)
+                .expectNext("data")
+                .verifyComplete();
+    }
+
+    @Test
+    void updateFluxMapShouldMutateCurrentTransaction() {
+        Flux<String> flux = Flux.deferContextual(ctx -> {
+            TransactionStack stack = ctx.get(AnalyticContextKeys.TRANSACTION_STACK_KEY);
+            assertEquals("value1", stack.peek().get("key1"));
+            assertEquals(2, stack.peek().get("key2"));
+            return Flux.just("a", "b");
+        })
+                .transform(ReactiveAnalytic.updateFlux(Map.of("key1", "value1", "key2", 2)))
+                .transform(ReactiveAnalytic.traceFlux("updateFluxMapTest"));
+
+        StepVerifier.create(flux)
+                .expectNext("a", "b")
                 .verifyComplete();
     }
 

@@ -105,6 +105,42 @@ public final class ReactiveAnalytic {
     }
 
     /**
+     * Sets multiple key-value pairs on the current transaction at subscription time.
+     */
+    public static <T> Function<Mono<T>, Mono<T>> update(Map<String, Object> entries) {
+        return mono -> mono.contextWrite(ctx -> {
+            try {
+                TransactionStack stack = ctx.getOrDefault(
+                        AnalyticContextKeys.TRANSACTION_STACK_KEY, null);
+                if (stack != null && !stack.isEmpty() && entries != null && !entries.isEmpty()) {
+                    stack.peek().putAll(entries);
+                }
+            } catch (Exception e) {
+                LOG.warn("Analytic update failed: {}", e.getMessage());
+            }
+            return ctx;
+        });
+    }
+
+    /**
+     * Sets multiple key-value pairs on the current Flux transaction at subscription time.
+     */
+    public static <T> Function<Flux<T>, Flux<T>> updateFlux(Map<String, Object> entries) {
+        return flux -> flux.contextWrite(ctx -> {
+            try {
+                TransactionStack stack = ctx.getOrDefault(
+                        AnalyticContextKeys.TRANSACTION_STACK_KEY, null);
+                if (stack != null && !stack.isEmpty() && entries != null && !entries.isEmpty()) {
+                    stack.peek().putAll(entries);
+                }
+            } catch (Exception e) {
+                LOG.warn("Analytic update failed: {}", e.getMessage());
+            }
+            return ctx;
+        });
+    }
+
+    /**
      * Extracts @Analysed fields from entity and adds them to the current transaction.
      */
     public static <T> Function<Mono<T>, Mono<T>> updateEntity(Object entity) {
