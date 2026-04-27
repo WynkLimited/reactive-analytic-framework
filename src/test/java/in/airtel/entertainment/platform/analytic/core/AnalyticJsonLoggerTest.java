@@ -12,13 +12,13 @@ class AnalyticJsonLoggerTest {
     @Test
     void shouldSerializeSimpleMap() {
         Map<String, Object> data = new LinkedHashMap<>();
-        data.put("transactionName", "testTx");
+        data.put("txnName", "testTx");
         data.put("timeTaken", 245);
         data.put("success", true);
 
         String json = AnalyticJsonLogger.toJson(data);
 
-        assertEquals("{\"transactionName\":\"testTx\",\"timeTaken\":245,\"success\":true}", json);
+        assertEquals("{\"txnName\":\"testTx\",\"timeTaken\":245,\"success\":true}", json);
     }
 
     @Test

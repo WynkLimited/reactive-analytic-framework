@@ -1,17 +1,11 @@
 package in.airtel.entertainment.platform.analytic.core;
 
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class TransactionData {
-
-    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ";
-    private static final String TIMEZONE = "UTC";
 
     private final String transactionName;
     private final long startTime;
@@ -58,9 +52,7 @@ public class TransactionData {
     public Map<String, Object> toEndMap(Throwable error) {
         long endTime = System.currentTimeMillis();
         Map<String, Object> result = new LinkedHashMap<>();
-        result.put("transactionName", transactionName);
-        result.put("startTime", formatTime(startTime));
-        result.put("endTime", formatTime(endTime));
+        result.put("txnName", transactionName);
         result.put("timeTaken", endTime - startTime);
         result.putAll(data);
         if (error != null) {
@@ -68,11 +60,5 @@ public class TransactionData {
             result.put("exceptionClass", error.getClass().getName());
         }
         return result;
-    }
-
-    private static String formatTime(long millis) {
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-        sdf.setTimeZone(TimeZone.getTimeZone(TIMEZONE));
-        return sdf.format(new Date(millis));
     }
 }

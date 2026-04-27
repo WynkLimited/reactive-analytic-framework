@@ -44,9 +44,9 @@ class TransactionDataTest {
 
         Map<String, Object> endMap = td.toEndMap(null);
 
-        assertEquals("testTx", endMap.get("transactionName"));
-        assertNotNull(endMap.get("startTime"));
-        assertNotNull(endMap.get("endTime"));
+        assertEquals("testTx", endMap.get("txnName"));
+        assertFalse(endMap.containsKey("startTime"));
+        assertFalse(endMap.containsKey("endTime"));
         assertNotNull(endMap.get("timeTaken"));
         assertEquals("banner_xstream", endMap.get("collectionId"));
         assertNull(endMap.get("exceptionMessage"));

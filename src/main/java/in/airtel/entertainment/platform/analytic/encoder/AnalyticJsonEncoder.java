@@ -44,10 +44,14 @@ public class AnalyticJsonEncoder extends EncoderBase<ILoggingEvent> {
             });
         }
 
-        // The message itself is the transaction JSON — embed as "transaction" field
+        // The message itself is the transaction JSON. Merge it at the root so
+        // ES fields stay short, e.g. "txnName" instead of "transaction.txnName".
         String message = event.getFormattedMessage();
         if (message != null && message.startsWith("{") && message.endsWith("}")) {
-            sb.append(",\"transaction\":").append(message);
+            String payload = message.substring(1, message.length() - 1).trim();
+            if (!payload.isEmpty()) {
+                sb.append(",").append(payload);
+            }
         } else if (message != null) {
             sb.append(",\"message\":\"").append(escapeJson(message)).append("\"");
         }

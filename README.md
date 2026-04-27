@@ -127,7 +127,7 @@ If no fields are annotated with `@Analysed`, all public primitive fields are ext
 Each transaction is flushed as a JSON string to the SLF4J logger named `analyticLogger`:
 
 ```json
-{"transactionName":"getRecommendation","startTime":"2026-02-16T09:30:00.000+0000","endTime":"2026-02-16T09:30:00.245+0000","timeTaken":245,"collectionId":"banner_xstream","contentCount":12}
+{"txnName":"getRecommendation","timeTaken":245,"collectionId":"banner_xstream","contentCount":12}
 ```
 
 On error, `exceptionMessage` and `exceptionClass` are included automatically.
@@ -151,7 +151,7 @@ For production, configure a dedicated appender with `AnalyticJsonEncoder` in `lo
 </logger>
 ```
 
-The encoder produces structured JSON with `@timestamp`, `level`, `loggerName`, all MDC properties (e.g., `correlationid`), and the transaction data nested under `"transaction"`:
+The encoder produces structured JSON with `@timestamp`, `level`, `loggerName`, all MDC properties (e.g., `correlationid`), and flattened transaction fields:
 
 ```json
 {
@@ -159,27 +159,23 @@ The encoder produces structured JSON with `@timestamp`, `level`, `loggerName`, a
   "level": "INFO",
   "loggerName": "analyticLogger",
   "correlationid": "abc-123",
-  "transaction": {
-    "transactionName": "getRecommendation",
-    "startTime": "2026-02-16T18:00:00.000+0000",
-    "endTime": "2026-02-16T18:00:00.245+0000",
-    "timeTaken": 245,
-    "collectionId": "banner_xstream",
-    "contentCount": 12
-  }
+  "txnName": "getRecommendation",
+  "timeTaken": 245,
+  "collectionId": "banner_xstream",
+  "contentCount": 12
 }
 ```
 
 ## Optional WebFilter
 
-To automatically create a root transaction for every HTTP request, enable the WebFilter:
+The WebFilter is retained as a compatibility pass-through for applications that still enable it:
 
 ```properties
 # application.yml or application.properties
 reactive.analytic.webfilter.enabled=true
 ```
 
-This captures `httpMethod`, `requestPath`, `correlationid` (from header), and `signalType` for every request. All `@AnalyseTransaction` methods within the request will nest under this root transaction.
+HTTP root transaction logging is intentionally disabled to avoid high-cardinality transaction names from raw request paths. Start analytic logging at `@AnalyseTransaction` or explicit `ReactiveAnalytic.trace(...)` boundaries.
 
 ## Architecture
 
@@ -204,7 +200,7 @@ in.airtel.entertainment.platform.analytic/
   autoconfigure/
     ReactiveAnalyticAutoConfiguration.java   Spring Boot 3.x auto-config
   filter/
-    AnalyticWebFilter.java          optional WebFilter for auto root transaction
+    AnalyticWebFilter.java          compatibility pass-through WebFilter
 ```
 
 ### How Context Propagation Works
